@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Youb Djaouad | Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #f2f2f7; 
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --text-main: #1c1c1e;
+            --text-sec: #48484a;
+            --accent: #FF5722; 
+            --border: rgba(209, 209, 214, 0.5);
+            --shadow: 0 20px 50px rgba(0,0,0,0.05);
+        }
+
+        body.dark-mode {
+            --bg-color: #1c1c1e;
+            --card-bg: rgba(44, 44, 46, 0.7);
+            --text-main: #ffffff;
+            --text-sec: #aeaeb2;
+            --border: rgba(58, 58, 60, 0.5);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease;
+        }
+
+        /* LIQUID BACKGROUND */
+        .gravity-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none;
+        }
+        .shape {
+            position: absolute; border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,87,34,0.12) 0%, rgba(255,255,255,0) 70%);
+            filter: blur(80px); animation: float-gravity 20s infinite alternate ease-in-out;
+        }
+        .s1 { width: 600px; height: 600px; top: -10%; left: -10%; }
+        .s2 { width: 500px; height: 500px; bottom: 5%; right: -5%; animation-delay: -5s; }
+
+        @keyframes float-gravity {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(120px, 180px) scale(1.1); }
+        }
+
+        /* SPRING MOTION REVEAL */
+        .reveal { 
+            opacity: 0; 
+            transform: scale(0.8) translateY(50px); 
+            transition: all 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .reveal.active { opacity: 1; transform: scale(1) translateY(0); }
+
+        .nav {
+            position: fixed; top: 20px; right: 20px; z-index: 1000;
+            display: flex; gap: 10px; background: var(--card-bg);
+            backdrop-filter: blur(25px); padding: 10px 20px; border-radius: 40px; border: 1px solid var(--border);
+        }
+        .nav-btn { background: none; border: none; cursor: pointer; color: var(--text-main); font-weight: 700; outline: none; }
+
+        header { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .portrait {
+            width: 250px; height: 250px; border-radius: 70px;
+            object-fit: cover; margin-bottom: 30px;
+            border: 4px solid #fff; box-shadow: var(--shadow);
+            animation: bounce-float 6s ease-in-out infinite;
+        }
+        @keyframes bounce-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+
+        h1 { font-size: clamp(3rem, 10vw, 4.5rem); font-weight: 800; letter-spacing: -3px; }
+        .hero-sub { color: var(--text-sec); font-size: 1.1rem; letter-spacing: 3px; text-transform: uppercase; }
+
+        section { max-width: 900px; margin: 0 auto; padding: 100px 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+        
+        /* GLASS CARDS */
+        .card {
+            background: var(--card-bg); backdrop-filter: blur(30px); padding: 40px; 
+            border-radius: 40px; border: 1px solid var(--border); cursor: pointer; 
+            transition: 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+        .card:hover { border-color: var(--accent); transform: scale(1.05); box-shadow: 0 40px 80px rgba(0,0,0,0.1); }
+
+        .skills-grid { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+        .skill { background: var(--card-bg); backdrop-filter: blur(10px); padding: 12px 25px; border-radius: 50px; border: 1px solid var(--border); font-weight: 600; }
+
+        /* MODAL */
+        .modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(20px);
+            z-index: 2000; display: none; justify-content: center; align-items: center; padding: 20px;
+        }
+        .m-content {
+            background: var(--bg-color); width: 100%; max-width: 650px;
+            padding: 40px; border-radius: 45px; position: relative;
+            border: 1px solid var(--border); animation: liquid-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes liquid-pop { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .m-img { width: 100%; border-radius: 30px; margin-bottom: 25px; box-shadow: var(--shadow); }
+        .close { position: absolute; top: 25px; right: 30px; cursor: pointer; font-size: 1.8rem; }
+
+        /* CONTACT DOCK */
+        .contact-box { text-align: center; padding: 60px; background: var(--card-bg); border-radius: 50px; border: 1px solid var(--border); backdrop-filter: blur(30px); }
+        .dock { display: flex; justify-content: center; flex-wrap: wrap; gap: 30px; margin-top: 40px; }
+        .dock-item { color: var(--text-main); text-decoration: none; font-size: 1.8rem; transition: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .dock-item:hover { transform: scale(1.3) translateY(-10px); color: var(--accent); }
+        .dock-item span { display: block; font-size: 0.7rem; font-weight: 800; margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+    <div class="gravity-container"><div class="shape s1"></div><div class="shape s2"></div></div>
+
+    <div class="nav">
+        <button class="nav-btn" id="lang-btn">FR</button>
+        <button class="nav-btn" id="theme-btn"><i class="fas fa-moon"></i></button>
+    </div>
+
+    <header>
+        <img src="IMG_0813.jpg" alt="Youb Djaouad" class="portrait reveal">
+        <h1 class="reveal">Youb Djaouad</h1>
+        <p class="hero-sub reveal"><span data-en="Social Media Manager" data-fr="Gestionnaire de Médias Sociaux">Social Media Manager</span> / <span data-en="French Student" data-fr="Étudiant en Français">French Student</span></p>
+    </header>
+
+    <section id="about" class="reveal">
+        <h2 data-en="About Me" data-fr="À Propos">About Me</h2>
+        <div style="font-size: 1.2rem; color: var(--text-sec); line-height: 1.8;">
+            <p data-en="I am a Social Media Manager with a deep passion for digital growth and creative strategy. I thrive on building brands from the ground up. I am also an L2 French Literature student at Univ Batna 2, bringing a professional linguistic edge to every project. I’m passion and worked before and I'd love to make new projects." 
+               data-fr="Je suis un gestionnaire de médias sociaux passionné par la croissance numérique. Je m'épanouis dans la création de marques à partir de zéro. Étudiant en L2 Lettres Françaises à l'Univ Batna 2, j'apporte une rigueur linguistique à mes projets. J'ai déjà de l'expérience et je souhaite réaliser de nouveaux projets.">
+               I am a Social Media Manager with a deep passion for digital growth and creative strategy. I thrive on building brands from the ground up. I am also an L2 French Literature student at Univ Batna 2, bringing a professional linguistic edge to every project. I’m passion and worked before and I'd love to make new projects.
+            </p>
+        </div>
+    </section>
+
+    <section id="projects">
+        <h2 class="reveal" data-en="Experience" data-fr="Expérience">Experience</h2>
+        <div class="grid">
+            <div class="card reveal" onclick="openM('gaming')"><h3>Gaming Center</h3><p>Viral Reach</p></div>
+            <div class="card reveal" onclick="openM('gift')"><h3>Gift Store</h3><p>E-com Scale</p></div>
+            <div class="card reveal" onclick="openM('otc')"><h3>OTC Club</h3><p>Vice Presidency</p></div>
+            <div class="card reveal" onclick="openM('dar')"><h3>Dar El Ilm</h3><p>Daily Montage</p></div>
+            <div class="card reveal" onclick="openM('gdgc')"><h3>GDGC Club</h3><p>Media Support</p></div>
+            <div class="card reveal" onclick="openM('arc')"><h3>ARC Phase</h3><p>Event SM</p></div>
+        </div>
+    </section>
+
+    <section id="skills" class="reveal">
+        <h2 data-en="Expertise" data-fr="Compétences">Expertise</h2>
+        <div class="skills-grid">
+            <div class="skill">Photography</div><div class="skill">Videography</div>
+            <div class="skill">Daily Montage</div><div class="skill">SM Management</div>
+            <div class="skill">Ads Sponsorship</div><div class="skill">French (Academic)</div>
+            <div class="skill">English - B2</div>
+        </div>
+    </section>
+
+    <section id="contact" class="reveal">
+        <div class="contact-box">
+            <h2 data-en="Let's Connect" data-fr="Contactez-moi">Let's Connect</h2>
+            <div class="dock">
+                <a href="tel:+213561751467" class="dock-item"><i class="fas fa-phone"></i><span>CALL</span></a>
+                <a href="https://www.google.com/maps/search/Batna" target="_blank" class="dock-item"><i class="fas fa-location-dot"></i><span>LOC</span></a>
+                <a href="https://www.linkedin.com/in/youb-djaouad-abderrahmane" target="_blank" class="dock-item"><i class="fab fa-linkedin"></i><span>LINKED</span></a>
+                <a href="https://www.instagram.com/wojaky/" target="_blank" class="dock-item"><i class="fab fa-instagram"></i><span>INSTA</span></a>
+                <a href="mailto:jawadyoub444@gmail.com" class="dock-item"><i class="fas fa-envelope"></i><span>MAIL</span></a>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal" id="modal" onclick="closeM()">
+        <div class="m-content" onclick="event.stopPropagation()">
+            <span class="close" onclick="closeM()">&times;</span>
+            <img src="" id="m-img" class="m-img">
+            <h3 id="m-title">Title</h3>
+            <p id="m-desc"></p>
+            <div id="m-link"></div>
+        </div>
+    </div>
+
+    <script>
+        const projects = {
+            gaming: { en: {title:"Gaming Center", desc:"627k+ views in one month."}, fr: {title:"Centre de Jeux", desc:"627k+ vues en un mois."}, img: "gamingcenter.jpg" },
+            gift: { en: {title:"Gift Store", desc:"6,000 followers and nationwide shipping."}, fr: {title:"Magasin de Cadeaux", desc:"6 000 abonnés et livraison nationale."}, img: "giftstore.jpg" },
+            otc: { en: {title:"OTC Club", desc:"Vice President & 2 years as SM Lead."}, fr: {title:"Club OTC", desc:"Vice-président et 2 ans SM Lead."}, img: "otcclub.jpg" },
+            dar: { en: {title:"Dar El Ilm", desc:"Daily montage for all camp days."}, fr: {title:"Dar El Ilm", desc:"Montage quotidien pour tout le camp."}, img: "https://images.unsplash.com/photo-1501503060443-ef4ed66d1b5b?q=80&w=1000", link: "https://drive.google.com/drive/folders/1dyv7oNkt_mW47ddHF6p6GDTcYnwyORtJ?usp=sharing" },
+            gdgc: { en: {title:"GDGC Club", desc:"Provided media for hackathons."}, fr: {title:"Club GDGC", desc:"Support média pour les hackathons."}, img: "gdgc.jpg" },
+            arc: { en: {title:"ARC Phase", desc:"SM Management for Robot Cup."}, fr: {title:"Phase ARC", desc:"Gestion SM pour Robot Cup."}, img: "arc.jpg" }
+        };
+
+        let currentLang = 'en';
+        document.getElementById('lang-btn').addEventListener('click', function() {
+            currentLang = currentLang === 'en' ? 'fr' : 'en';
+            this.innerText = currentLang === 'en' ? 'FR' : 'EN';
+            document.querySelectorAll('[data-en]').forEach(el => el.innerText = el.getAttribute(`data-${currentLang}`));
+        });
+
+        function openM(key) {
+            const p = projects[key];
+            const content = p[currentLang];
+            document.getElementById('m-title').innerText = content.title;
+            document.getElementById('m-desc').innerText = content.desc;
+            document.getElementById('m-img').src = p.img;
+            document.getElementById('m-link').innerHTML = p.link ? `<a href="${p.link}" target="_blank" style="color:var(--accent); font-weight:700;">Drive Folder →</a>` : "";
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function closeM() { document.getElementById('modal').style.display = 'none'; }
+        document.getElementById('theme-btn').addEventListener('click', () => document.body.classList.toggle('dark-mode'));
+        const obs = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); }));
+        document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+    </script>
+</body>
+</html>
